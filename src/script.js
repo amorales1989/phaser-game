@@ -50,146 +50,165 @@ let config = {
   }
   
   function create() {
-    this.add.image(400, 300, 'sky');
-  
+    this.add.image(400, 300, "sky");
+
     platforms = this.physics.add.staticGroup();
-  
-    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-  
-    platforms.create(50, 250, 'ground');
-    platforms.create(600, 400, 'ground');
-    platforms.create(750, 220, 'ground');
-  
-    player = this.physics.add.sprite(100, 450, 'dude');
-  
+
+    platforms.create(400, 568, "ground").setScale(2).refreshBody();
+
+    platforms.create(50, 250, "ground");
+    platforms.create(600, 400, "ground");
+    platforms.create(750, 220, "ground");
+
+    player = this.physics.add.sprite(100, 450, "dude");
+
     player.setCollideWorldBounds(true);
     player.setBounce(0.2);
-  
+
     this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+      key: "left",
+      frames: this.anims.generateFrameNumbers("dude", { start: 0, end: 3 }),
       frameRate: 10,
       repeat: -1,
     });
-  
+
     this.anims.create({
-      key: 'turn',
-      frames: [{ key: 'dude', frame: 4 }],
+      key: "turn",
+      frames: [{ key: "dude", frame: 4 }],
       frameRate: 20,
     });
-  
+
     this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+      key: "right",
+      frames: this.anims.generateFrameNumbers("dude", { start: 5, end: 8 }),
       frameRate: 10,
       repeat: -1,
     });
-  
+
     this.physics.add.collider(player, platforms);
-  
+
     cursors = this.input.keyboard.createCursorKeys();
-  
+
     stars = this.physics.add.group({
-      key: 'star',
+      key: "star",
       repeat: 11,
       setXY: { x: 12, y: 0, stepX: 70 },
     });
-  
+
     stars.children.iterate(function (child) {
       child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
     });
-  
+
     this.physics.add.collider(stars, platforms);
-  
+
     this.physics.add.overlap(player, stars, collectStar, null, this);
-  
+
     // Texto del puntaje con estilo limpio (sin fondo)
-    scoreText = this.add.text(16, 16, 'Score: 0', {
-      fontSize: '32px',
-      fontFamily: 'Arial',
-      color: '#000',
+    scoreText = this.add.text(16, 16, "Score: 0", {
+      fontSize: "32px",
+      fontFamily: "Arial",
+      color: "#000",
     });
-  
+
     bombs = this.physics.add.group();
-  
+
     this.physics.add.collider(bombs, platforms);
-  
+
     this.physics.add.collider(player, bombs, hitBomb, null, this);
-  
+
+    // Mostrar los botones solo en dispositivos móviles
     // Mostrar los botones solo en dispositivos móviles
     if (isMobileDevice()) {
       // Botón izquierdo
-      leftButton = this.add.text(50, 500, '←', {
-        fontSize: '24px',
-        fontFamily: 'Arial',
-        color: '#fff',
-        backgroundColor: '#3498db',
-        padding: { left: 10, right: 10, top: 5, bottom: 5 },
-        borderRadius: 10,
-        shadow: {
-          offsetX: 2,
-          offsetY: 2,
-          color: '#000',
-          blur: 2,
-          fill: true,
-        },
-      }).setOrigin(0.5).setInteractive();
-  
+      leftButton = this.add
+        .text(50, 500, "←", {
+          fontSize: "24px",
+          fontFamily: "Arial",
+          color: "#fff",
+          backgroundColor: "#3498db",
+          padding: { left: 10, right: 10, top: 5, bottom: 5 },
+          borderRadius: 10,
+          shadow: {
+            offsetX: 2,
+            offsetY: 2,
+            color: "#000",
+            blur: 2,
+            fill: true,
+          },
+        })
+        .setOrigin(0.5)
+        .setInteractive();
+
       // Botón derecho
-      rightButton = this.add.text(150, 500, '→', {
-        fontSize: '24px',
-        fontFamily: 'Arial',
-        color: '#fff',
-        backgroundColor: '#3498db',
-        padding: { left: 10, right: 10, top: 5, bottom: 5 },
-        borderRadius: 10,
-        shadow: {
-          offsetX: 2,
-          offsetY: 2,
-          color: '#000',
-          blur: 2,
-          fill: true,
-        },
-      }).setOrigin(0.5).setInteractive();
-  
+      rightButton = this.add
+        .text(150, 500, "→", {
+          fontSize: "24px",
+          fontFamily: "Arial",
+          color: "#fff",
+          backgroundColor: "#3498db",
+          padding: { left: 10, right: 10, top: 5, bottom: 5 },
+          borderRadius: 10,
+          shadow: {
+            offsetX: 2,
+            offsetY: 2,
+            color: "#000",
+            blur: 2,
+            fill: true,
+          },
+        })
+        .setOrigin(0.5)
+        .setInteractive();
+
       // Botón de salto
-      jumpButton = this.add.text(700, 500, '↑', {
-        fontSize: '24px',
-        fontFamily: 'Arial',
-        color: '#fff',
-        backgroundColor: '#3498db',
-        padding: { left: 10, right: 10, top: 5, bottom: 5 },
-        borderRadius: 10,
-        shadow: {
-          offsetX: 2,
-          offsetY: 2,
-          color: '#000',
-          blur: 2,
-          fill: true,
-        },
-      }).setOrigin(0.5).setInteractive();
-  
-      leftButton.on('pointerdown', function () {
+      jumpButton = this.add
+        .text(700, 500, "↑", {
+          fontSize: "24px",
+          fontFamily: "Arial",
+          color: "#fff",
+          backgroundColor: "#3498db",
+          padding: { left: 10, right: 10, top: 5, bottom: 5 },
+          borderRadius: 10,
+          shadow: {
+            offsetX: 2,
+            offsetY: 2,
+            color: "#000",
+            blur: 2,
+            fill: true,
+          },
+        })
+        .setOrigin(0.5)
+        .setInteractive();
+
+      leftButton.on("pointerdown", function () {
         player.setVelocityX(-160);
-        player.anims.play('left', true);
+        player.anims.play("left", true);
       });
-      leftButton.on('pointerup', function () {
+
+      leftButton.on("pointerup", function () {
         player.setVelocityX(0);
-        player.anims.play('turn', true);
+        player.anims.play("turn", true);
       });
-  
-      rightButton.on('pointerdown', function () {
+
+      rightButton.on("pointerdown", function () {
         player.setVelocityX(160);
-        player.anims.play('right', true);
+        player.anims.play("right", true);
       });
-      rightButton.on('pointerup', function () {
+
+      rightButton.on("pointerup", function () {
         player.setVelocityX(0);
-        player.anims.play('turn', true);
+        player.anims.play("turn", true);
       });
-  
-      jumpButton.on('pointerdown', function () {
+
+      jumpButton.on("pointerdown", function () {
         if (player.body.touching.down) {
           player.setVelocityY(-330);
+        }
+      });
+
+      jumpButton.on("pointerup", function () {
+        // Detener el salto al soltar el botón
+        if (player.body.velocity.y < 0) {
+          player.setVelocityY(0);
         }
       });
     }
