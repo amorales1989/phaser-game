@@ -179,7 +179,8 @@ function update() {
   if (gameOver) {
     return;
   }
-
+  
+   
   if (cursors.left.isDown || this.joystickCursors.left.isDown) {
     player.setVelocityX(-160);
     player.anims.play("left", true);
@@ -192,7 +193,10 @@ function update() {
   }
 
   // Mantén la lógica del salto a través del joystick
-  if (this.joystickCursors.up.isDown && player.body.touching.down) {
+  if (
+    cursors.space.isDown ||
+    (this.joystickCursors.up.isDown && player.body.touching.down)
+  ) {
     player.setVelocityY(-330);
   }
 }
