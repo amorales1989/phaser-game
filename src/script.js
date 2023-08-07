@@ -72,7 +72,7 @@ function create() {
   platforms.create(400, 600, "ground").setScale(5).refreshBody();
 
   platforms.create(50, 250, "ground");
-  platforms.create(600, 400, "ground");
+  platforms.create(550, 400, "ground");
   platforms.create(750, 220, "ground");
   platforms.create(1100, 100, "ground");
 
@@ -180,6 +180,9 @@ function update() {
     return;
   }
 
+  let isMobileTouch = isMobileDevice() && jumpButton;
+  let jumpAction = cursors.space?.isDown || isMobileTouch;
+
   if (cursors.left.isDown || this.joystickCursors.left.isDown) {
     player.setVelocityX(-160);
     player.anims.play("left", true);
@@ -190,7 +193,7 @@ function update() {
     player.setVelocityX(0);
     player.anims.play("turn", true);
   }
-  if (cursors.space.isDown && player.body.touching.down) {
+  if (jumpAction && player.body.touching.down) {
     player.setVelocityY(-330);
   }
 }
