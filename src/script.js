@@ -56,9 +56,6 @@ function preload() {
 }
 
 function create() {
-  // Ajustar el tamaño del juego a las dimensiones de la ventana del navegador
-  this.scale.resize(window.innerWidth, window.innerHeight);
-
   // Agregar la imagen y escalarla para ocupar el 100% de la pantalla
   const image = this.add.image(
     window.innerWidth / 2,
@@ -68,6 +65,8 @@ function create() {
   image.displayWidth = window.innerWidth;
   image.displayHeight = window.innerHeight;
 
+  // Ajustar el tamaño del juego a las dimensiones de la ventana del navegador
+  this.scale.resize(window.innerWidth, window.innerHeight);
   platforms = this.physics.add.staticGroup();
 
   platforms.create(400, 600, "ground").setScale(5).refreshBody();
@@ -108,20 +107,28 @@ function create() {
 
   this.joyStick = this.plugins.get("rexvirtualjoystickplugin").add(this, {
     x: 55,
-    y: 400,
+    y: 450,
     radius: 100,
-    base: this.add.circle(0, 0, 50, 0x888888),
-    thumb: this.add.circle(0, 0, 25, 0xcccccc),
+    base: this.add.circle(0, 0, 50, 0x888888, 0.3),
+    thumb: this.add.circle(0, 0, 25, 0xcccccc, 0.3),
   });
   this.joystickCursors = this.joyStick.createCursorKeys();
 
   this.cursors = this.input.keyboard.createCursorKeys();
 
-  stars = this.physics.add.group({
-    key: "star",
-    repeat: 19,
-    setXY: { x: 10, y: 0, stepX: 70 },
-  });
+  if (isMobileDevice()) {
+    stars = this.physics.add.group({
+      key: "star",
+      repeat: 6,
+      setXY: { x: 10, y: 0, stepX: 65 }, // Ajustar el stepX
+    });
+  } else {
+    stars = this.physics.add.group({
+      key: "star",
+      repeat: 19,
+      setXY: { x: 10, y: 0, stepX: 70 }, // Ajustar el stepX
+    });
+  }
 
   stars.children.iterate(function (child) {
     child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
@@ -145,26 +152,17 @@ function create() {
   this.physics.add.collider(player, bombs, hitBomb, null, this);
 
   // Mostrar los botones solo en dispositivos móviles
-  if (isMobileDevice()) {
+  if (this.sys.game.device.input.touch) {
+    platforms.create(400, 600, "ground").setScale(5).refreshBody();
+
+    // platforms.create(30, 250, "ground").setScale(0, 7).refreshBody();
+
     // Botón de salto
-    jumpButton = this.add
-      .text(700, 500, "↑", {
-        fontSize: "24px",
-        fontFamily: "Arial",
-        color: "#fff",
-        backgroundColor: "#3498db",
-        padding: { left: 10, right: 10, top: 5, bottom: 5 },
-        borderRadius: 10,
-        shadow: {
-          offsetX: 2,
-          offsetY: 2,
-          color: "#000",
-          blur: 2,
-          fill: true,
-        },
-      })
-      .setOrigin(0.5)
-      .setInteractive();
+    const jumpButton = this.add.circle(400, 450, 30, 0x3498db, 0.3);
+    jumpButton.setStrokeStyle(2, 0x888888);
+
+    jumpButton.setOrigin(0.5);
+    jumpButton.setInteractive();
 
     jumpButton.on("pointerdown", function () {
       if (player.body.touching.down) {
@@ -172,7 +170,7 @@ function create() {
       }
     });
   } else {
-    // Hide joystick if not a mobile device
+    // Ocultar el joystick si no es un dispositivo móvil
     this.joyStick.visible = false;
   }
 }
