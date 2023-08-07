@@ -29,10 +29,6 @@ let stars;
 let bombs;
 let restartButton;
 
-// Botones en pantalla
-let leftButton;
-let rightButton;
-let jumpButton;
 
 function isMobileDevice() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -56,7 +52,6 @@ function preload() {
 }
 
 function create() {
-  // Agregar la imagen y escalarla para ocupar el 100% de la pantalla
   const image = this.add.image(
     window.innerWidth / 2,
     window.innerHeight / 2,
@@ -65,7 +60,6 @@ function create() {
   image.displayWidth = window.innerWidth;
   image.displayHeight = window.innerHeight;
 
-  // Ajustar el tamaño del juego a las dimensiones de la ventana del navegador
   this.scale.resize(window.innerWidth, window.innerHeight);
   platforms = this.physics.add.staticGroup();
 
@@ -120,13 +114,13 @@ function create() {
     stars = this.physics.add.group({
       key: "star",
       repeat: 6,
-      setXY: { x: 10, y: 0, stepX: 65 }, // Ajustar el stepX
+      setXY: { x: 10, y: 0, stepX: 65 },
     });
   } else {
     stars = this.physics.add.group({
       key: "star",
       repeat: 19,
-      setXY: { x: 10, y: 0, stepX: 70 }, // Ajustar el stepX
+      setXY: { x: 10, y: 0, stepX: 70 },
     });
   }
 
@@ -138,7 +132,6 @@ function create() {
 
   this.physics.add.overlap(player, stars, collectStar, null, this);
 
-  // Texto del puntaje con estilo limpio (sin fondo)
   scoreText = this.add.text(16, 16, "Score: 0", {
     fontSize: "32px",
     fontFamily: "Arial",
@@ -150,37 +143,13 @@ function create() {
   this.physics.add.collider(bombs, platforms);
 
   this.physics.add.collider(player, bombs, hitBomb, null, this);
-
-  /*  // Mostrar los botones solo en dispositivos móviles
-  if (this.sys.game.device.input.touch) {
-    platforms.create(400, 600, "ground").setScale(5).refreshBody();
-
-    // platforms.create(30, 250, "ground").setScale(0, 7).refreshBody();
-
-    // Botón de salto
-    const jumpButton = this.add.circle(370, 750, 30, 0x3498db, 0.3);
-    jumpButton.setStrokeStyle(2, 0x888888);
-
-    jumpButton.setOrigin(0.5);
-    jumpButton.setInteractive();
-
-    jumpButton.on("pointerdown", function () {
-      if (player.body.touching.down) {
-        player.setVelocityY(-330);
-      }
-    });
-  } else {
-    // Ocultar el joystick si no es un dispositivo móvil
-    this.joyStick.visible = false;
-  } */
 }
 
 function update() {
   if (gameOver) {
     return;
   }
-  
-   
+
   if (cursors.left.isDown || this.joystickCursors.left.isDown) {
     player.setVelocityX(-160);
     player.anims.play("left", true);
@@ -192,9 +161,8 @@ function update() {
     player.anims.play("turn", true);
   }
 
-  // Mantén la lógica del salto a través del joystick
   if (
-    cursors.space.isDown ||
+    (cursors.space.isDown && player.body.touching.down) ||
     (this.joystickCursors.up.isDown && player.body.touching.down)
   ) {
     player.setVelocityY(-330);
@@ -232,9 +200,8 @@ function hitBomb(player, bomb) {
 
   gameOver = true;
 
-  // Mostrar el botón "Reiniciar" con estilo de botón
-  let buttonWidth = 200; // Ancho del botón
-  let buttonHeight = 50; // Alto del botón
+  let buttonWidth = 200;
+  let buttonHeight = 50;
 
   let centerX = window.innerWidth / 2;
   let centerY = window.innerHeight / 2;
@@ -248,9 +215,8 @@ function hitBomb(player, bomb) {
     borderRadius: 20,
   });
 
-  // Ajustar el botón al centro de la pantalla
   restartButton.setOrigin(0.5);
-  restartButton.setVisible(true); // Mostrar el botón de reinicio
+  restartButton.setVisible(true);
   restartButton.setOrigin(0.5);
   restartButton.setInteractive();
   restartButton.on("pointerdown", restartGame);
