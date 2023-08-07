@@ -106,8 +106,8 @@ function create() {
   cursors = this.input.keyboard.createCursorKeys();
 
   this.joyStick = this.plugins.get("rexvirtualjoystickplugin").add(this, {
-    x: 55,
-    y: 450,
+    x: 80,
+    y: 750,
     radius: 100,
     base: this.add.circle(0, 0, 50, 0x888888, 0.3),
     thumb: this.add.circle(0, 0, 25, 0xcccccc, 0.3),
@@ -158,7 +158,7 @@ function create() {
     // platforms.create(30, 250, "ground").setScale(0, 7).refreshBody();
 
     // Botón de salto
-    const jumpButton = this.add.circle(400, 450, 30, 0x3498db, 0.3);
+    const jumpButton = this.add.circle(370, 750, 30, 0x3498db, 0.3);
     jumpButton.setStrokeStyle(2, 0x888888);
 
     jumpButton.setOrigin(0.5);
