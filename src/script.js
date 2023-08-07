@@ -106,7 +106,7 @@ function create() {
   cursors = this.input.keyboard.createCursorKeys();
 
   this.joyStick = this.plugins.get("rexvirtualjoystickplugin").add(this, {
-    x: 210,
+    x: 80,
     y: 750,
     radius: 100,
     base: this.add.circle(0, 0, 50, 0x888888, 0.3),
@@ -151,15 +151,15 @@ function create() {
 
   this.physics.add.collider(player, bombs, hitBomb, null, this);
 
-  // Mostrar los botones solo en dispositivos móviles
+  /*  // Mostrar los botones solo en dispositivos móviles
   if (this.sys.game.device.input.touch) {
     platforms.create(400, 600, "ground").setScale(5).refreshBody();
 
     // platforms.create(30, 250, "ground").setScale(0, 7).refreshBody();
 
     // Botón de salto
-    /*  const jumpButton = this.add.circle(370, 750, 30, 0x3498db, 0.3);
-    jumpButton.setStrokeStyle(2, 0x888888); */
+    const jumpButton = this.add.circle(370, 750, 30, 0x3498db, 0.3);
+    jumpButton.setStrokeStyle(2, 0x888888);
 
     jumpButton.setOrigin(0.5);
     jumpButton.setInteractive();
@@ -172,16 +172,13 @@ function create() {
   } else {
     // Ocultar el joystick si no es un dispositivo móvil
     this.joyStick.visible = false;
-  }
+  } */
 }
 
 function update() {
   if (gameOver) {
     return;
   }
-
-  let isMobileTouch = this.joystickCursors.up.isDown;
-  let jumpAction = cursors.space?.isDown || isMobileTouch;
 
   if (cursors.left.isDown || this.joystickCursors.left.isDown) {
     player.setVelocityX(-160);
@@ -193,7 +190,9 @@ function update() {
     player.setVelocityX(0);
     player.anims.play("turn", true);
   }
-  if (jumpAction && player.body.touching.down) {
+
+  // Mantén la lógica del salto a través del joystick
+  if (this.joystickCursors.up.isDown && player.body.touching.down) {
     player.setVelocityY(-330);
   }
 }
