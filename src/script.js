@@ -106,7 +106,7 @@ function create() {
   cursors = this.input.keyboard.createCursorKeys();
 
   this.joyStick = this.plugins.get("rexvirtualjoystickplugin").add(this, {
-    x: 80,
+    x: 210,
     y: 750,
     radius: 100,
     base: this.add.circle(0, 0, 50, 0x888888, 0.3),
